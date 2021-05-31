@@ -1,12 +1,13 @@
 
-import React from 'react';
+import React,{FC} from 'react';
+import {Link} from 'react-router-dom';
 import styles from './Header.module.scss';
-import Nav from '../Nav/Nav';
+import Nav from './Nav/Nav';
 
-const Header = () => (
+const Header:FC = () => (
   <div className={styles.header}>
     <div className={styles.logo}>
-      <h3>Jobs now</h3>
+      <h3><Link to="/" >Jobs now</Link></h3>
     </div>
     <div>
       <Nav/>

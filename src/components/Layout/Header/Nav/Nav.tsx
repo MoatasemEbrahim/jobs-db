@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{FC} from 'react';
 import {Link} from 'react-router-dom';
 import styles from './Nav.module.scss';
 import {useLocation} from 'react-router-dom';
@@ -9,7 +9,7 @@ const links = [
   { route:'/history', label:'History', },
 ]
 
-const Nav = () => {
+const Nav:FC = () => {
   const {pathname} = useLocation()
 
   return (

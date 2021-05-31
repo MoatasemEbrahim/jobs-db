@@ -2,11 +2,16 @@
   display: flex;
   justify-content: space-between;
   padding: 1rem;
-  border-bottom: 1px solid gray;
+  border-bottom: .1rem solid gray;
 
   .logo {
     h3 {
       margin: 0;
+
+      a {
+        text-decoration: none;
+        color: #000;
+      }
     }
   }
 }

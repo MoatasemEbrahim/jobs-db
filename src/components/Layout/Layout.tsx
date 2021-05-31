@@ -1,8 +1,8 @@
-import React from 'react';
+import React,{FC} from 'react';
 import Router from '../../routes/Router';
 import Header from './Header/Header';
 
-const Layout = () => (
+const Layout:FC = () => (
   <div>
     <header>
       <Header />

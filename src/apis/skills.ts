@@ -9,7 +9,6 @@ const skillsAPI = {
         limit: 20
       }
     });
-    console.log(res.data)
     return res.data;
   },
 };

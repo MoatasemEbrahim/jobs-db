@@ -1,0 +1,14 @@
+.container {
+  .search-results {
+    background-color: #f2f2f2;
+    padding: 2rem;
+    min-height: calc( 100vh - 15rem );
+
+    .jobs {
+      display: grid;
+      grid-template-columns: 49% 49%;
+      column-gap: 2%;
+    }
+  }
+
+}
