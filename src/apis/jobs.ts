@@ -11,6 +11,14 @@ const jobsAPI = {
     });
     return res.data;
   },
+  getJobsSearchOptions: async (text:string) => {
+    const res = await axiosInstance.get('/jobs/autocomplete',{
+      params:{
+        contains: text
+      }
+    });
+    return res.data;
+  }
 };
 
 export default jobsAPI;

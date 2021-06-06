@@ -7,6 +7,16 @@
     margin: 0;
   }
 
+  h4 {
+    margin-bottom: 0;
+  }
+
+  .skills {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+  }
+
   a {
     margin-top: 2rem;
     display: block;

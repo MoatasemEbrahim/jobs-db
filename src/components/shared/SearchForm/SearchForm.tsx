@@ -1,22 +1,33 @@
-import React,{FC,useState} from 'react';
+import React,{FC} from 'react';
+import Autocomplete from 'react-autocomplete'
 import styles from './SearchForm.module.scss';
 
-const SearchForm = () => {
-  const [text, setText] = useState<string>('');
-  return (
-    <div className={styles.container}>
-      <div className={styles.form}>
-        <input 
-          className={styles.input}
-          value={text}
-          placeholder='search keyword'
-          onChange={({target:{value}})=>setText(value)}
-          type="text"
-        />
-        <img className={styles.icon} src='/iconfinder_search_172546.png' alt='search-icon' />
-      </div>
+const SearchForm:FC<IProps> = ({searchText,handleSearch,searchOptions=[]}:IProps) => 
+  <div className={styles.container}>
+    <div className={styles.form}>
+      <Autocomplete
+        getItemValue={(item) => item}
+        items={searchOptions}
+        renderItem={(item, isHighlighted) =>
+          <div key={item} style={{ background: isHighlighted ? 'lightgray' : 'white' ,width:'100%'}}>
+            {item}
+          </div>
+        }
+        value={searchText}
+        onChange={({target:{value}}) => handleSearch(value)}
+        onSelect={(value) => handleSearch(value)}
+        inputProps={{className:styles.input}}
+        wrapperProps={{className: styles.wrapper}}
+      />
+      <img className={styles.icon} src='/iconfinder_search_172546.png' alt='search-icon' />
     </div>
-  )
-}
+  </div>
 
-export default SearchForm
+
+export default SearchForm;
+
+interface IProps {
+  searchText: string,
+  handleSearch: (text:string) => void,
+  searchOptions?: string[]
+}

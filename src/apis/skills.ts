@@ -11,6 +11,10 @@ const skillsAPI = {
     });
     return res.data;
   },
+  getJobRelatedSkills: async (jobId:string) => {
+    const res = await axiosInstance.get(`/jobs/${jobId}/related_skills`);
+    return res.data;
+  }
 };
 
 export default skillsAPI;
