@@ -1,0 +1,44 @@
+.container {
+  padding: 2rem;
+  background-color: #f2f2f2;
+
+  .body {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    column-gap: 2%;
+
+
+    .other-entities, .related-entities {
+      padding: 1rem;
+      border-radius: .3rem;
+
+      h4 {
+        margin-top: 0;
+      }
+    }
+
+    .other-entities {
+      background-color: #fff;
+
+      .other-entity-link {
+        padding: 1rem;
+        margin: .5rem 0;
+        background-color: #f0f0f0;
+        display: block;
+        text-decoration: none;
+        color: #000;
+        border-radius: .3rem;
+      }
+
+    }
+    .related-entities {
+      background-color: #d9d9d9;
+
+      .related-entity-link {
+        margin: 1rem 0;
+        display: block;
+        color: #000;
+      }
+    }
+  }
+}

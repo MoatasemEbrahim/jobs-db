@@ -1,11 +1,6 @@
-import React from 'react';
+import React,{FC} from 'react';
+import Entity from '../components/Entity/Entity';
 
-const Job = () => {
-  return (
-    <div>
-      
-    </div>
-  )
-}
+const JobPage:FC = () => <Entity entity="jobs"/>
 
-export default Job
+export default JobPage;

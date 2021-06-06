@@ -14,13 +14,13 @@ const Routes = [
     component: Jobs,
   },
   {
-    path: '/job/:id',
+    path: '/jobs/:id',
     key: 'JOB',
     exact: true,
     component: Job,
   },
   {
-    path: '/skill/:id',
+    path: '/skills/:id',
     key: 'SKILL',
     exact: true,
     component: Skill,

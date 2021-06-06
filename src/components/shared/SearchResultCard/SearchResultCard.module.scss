@@ -15,6 +15,11 @@
     display: flex;
     flex-wrap: wrap;
     margin-top: 1rem;
+
+    .link {
+      color: #000;
+      text-decoration: none;
+    }
   }
 
   a {

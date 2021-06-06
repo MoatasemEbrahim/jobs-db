@@ -5,7 +5,6 @@ import SearchForm from '../shared/SearchForm/SearchForm';
 import styles from './Jobs.module.scss';
 import JobsGrid from '../shared/JobsGrid/JobsGrid';
 import jobsAPIs from '../../apis/jobs';
-import skillsAPIs from '../../apis/skills';
 
 const Jobs:FC = () => {
   const [jobs, setJobs] = useState<IJob[]>([]);
@@ -21,7 +20,7 @@ const Jobs:FC = () => {
         setLoading(true)
         const jobs = await jobsAPIs.getJobs(currentPage);
         const jobSkillsRequests : [Promise<IJob>]= jobs.slice(0,-1).map(
-          async({uuid}) => skillsAPIs.getJobRelatedSkills(uuid).catch(e => console.warn(e.message))
+          async({uuid}) => jobsAPIs.getJobRelatedSkills(uuid).catch(e => console.warn(e.message))
         )
         const jobsAndSkills = await Promise.all(jobSkillsRequests)
         setJobs(prevJobs => [...prevJobs,...jobsAndSkills.filter(Boolean)])
@@ -55,7 +54,7 @@ const Jobs:FC = () => {
 
   const navigateToSearchPage = useCallback(debounce((text)=>{
     push(`/search?jobTitle=${text}`);
-  },400),[push])
+  },500),[push])
 
   const handleSearch = (text) => {
     setSearchText(text);

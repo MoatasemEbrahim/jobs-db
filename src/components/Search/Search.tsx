@@ -25,7 +25,7 @@ const Search:FC = () => {
       const options = await jobsAPIs.getJobsSearchOptions(text)
       setSearchOptions(options.map(({suggestion})=>suggestion))
       const jobSkillsRequests : [Promise<IJob>]= options.slice(0,12).map(
-        async({uuid}) => skillsAPIs.getJobRelatedSkills(uuid).catch(e => console.warn(e.message))
+        async({uuid}) => jobsAPIs.getJobRelatedSkills(uuid).catch(e => console.warn(e.message))
       )
       const jobsAndSkills = await Promise.all(jobSkillsRequests)
       setJobs(jobsAndSkills.filter(Boolean))
@@ -43,13 +43,16 @@ const Search:FC = () => {
     })()
   },[searchText,push,filterJobs])
 
-  const handleSearch = (text) => { setSearchText(text) }
+  const handleSearch = (text) => { 
+    if(text === '') return push('/');
+    setSearchText(text)
+  }
 
   return (
     <div>
       <SearchForm searchText={searchText} handleSearch={handleSearch} searchOptions={searchOptions} />
       <div className={styles['search-results']}>
-        <h2>{searchText ? 'Jobs' :  'All jobs'}</h2>
+        <h2>{searchText && `"${searchText}" Jobs`}</h2>
         {loading && <p>Loading ...</p>}
         <JobsGrid jobs={jobs}/>
         {!loading && searchText && jobs.length === 0 && <h4>No Jobs matching "{searchText}"</h4>}

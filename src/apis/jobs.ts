@@ -18,7 +18,19 @@ const jobsAPI = {
       }
     });
     return res.data;
-  }
+  },
+  getOneJob: async (jobId:string) => {
+    const res = await axiosInstance.get(`/jobs/${jobId}`);
+    return res.data;
+  },
+  getRelatedJobs: async (jobId:string) => {
+    const res = await axiosInstance.get(`/jobs/${jobId}/related_jobs`);
+    return res.data;
+  },
+  getJobRelatedSkills: async (jobId:string) => {
+    const res = await axiosInstance.get(`/jobs/${jobId}/related_skills`);
+    return res.data;
+  },
 };
 
 export default jobsAPI;

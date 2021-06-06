@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const instance = axios.create({
   baseURL: 'http://api.dataatwork.org/v1/',
-  timeout: 5000,
+  timeout: 12000,
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',

@@ -8,9 +8,11 @@ const SearchResultCard:FC<IProps> = ({id,title,skills}) =>
     <h3>{title}</h3>
     <h4>Related skills</h4>
     <div className={styles.skills}>
-      {skills.slice(0,6).map(({skill_name,skill_uuid})=> <Tag key={skill_uuid} title={skill_name} />)}
+      {skills.slice(0,6).map(({skill_name,skill_uuid})=>
+        <Link className={styles.link} key={skill_uuid} to={`/skills/${skill_uuid}`} ><Tag title={skill_name} /></Link>
+      )}
     </div>
-    <Link to={`/job/${id}`}>View job details</Link>
+    <Link to={`/jobs/${id}`}>View job details</Link>
   </div>
 
 export default SearchResultCard;

@@ -1,11 +1,6 @@
-import React from 'react'
+import React,{FC} from 'react';
+import Entity from '../components/Entity/Entity';
 
-const Skill = () => {
-  return (
-    <div>
-      
-    </div>
-  )
-}
+const SkillPage:FC = () => <Entity entity="skills"/>
 
-export default Skill
+export default SkillPage;
