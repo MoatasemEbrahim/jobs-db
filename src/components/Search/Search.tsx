@@ -5,12 +5,12 @@ import {useHistory,useLocation} from 'react-router-dom';
 import JobsGrid from '../shared/JobsGrid/JobsGrid';
 import SearchForm from '../shared/SearchForm/SearchForm';
 import jobsAPIs from '../../apis/jobs';
-import skillsAPIs from '../../apis/skills';
+import {IJob} from '../../types/jobs';
 import styles from './Search.module.scss';
 
 const Search:FC = () => {
   const [jobs, setJobs] = useState<IJob[]>([]);
-  const [loading,setLoading] = useState<boolean>(true)
+  const [loading,setLoading] = useState<boolean>(false)
   const {search:queryString} = useLocation();
   const [searchText,setSearchText] = useState<string>(
     () => parse(queryString)?.jobTitle as string || '' 
@@ -19,6 +19,7 @@ const Search:FC = () => {
   const {push} = useHistory();
 
   const filterJobs = useCallback(debounce(async(text)=>{
+    if(!text) return;
     setLoading(true)
     setJobs([]);
     try {
@@ -62,12 +63,3 @@ const Search:FC = () => {
 }
 
 export default Search
-
-interface IJob {
-  job_uuid: string,
-  job_title: string,
-  skills: {
-    skill_name: string,
-    skill_uuid: string
-  }[]
-}

@@ -1,4 +1,5 @@
 import React,{FC} from 'react';
+import {IJob} from '../../../types/jobs';
 import SearchResultCard from '../SearchResultCard/SearchResultCard';
 import styles from './JobsGrid.module.scss';
 
@@ -10,13 +11,3 @@ const JobsGrid:FC<{jobs:IJob[]}> = ({jobs}:{jobs:IJob[]}) =>
   </div>
 
 export default JobsGrid;
-
-interface IJob {
-  job_uuid: string,
-  job_title: string,
-  skills: {
-    skill_name: string,
-    skill_uuid: string
-  }[]
-}
-

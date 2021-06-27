@@ -1,37 +1,55 @@
 import React,{FC,useState,useEffect,useRef, useCallback} from 'react';
 import {useHistory} from 'react-router-dom';
 import debounce from 'lodash/debounce';
+import { useSelector, useDispatch } from 'react-redux';
+import {setJobs,setJobsPage,setSkills,setJobsFirstLoad} from '../../Redux/actions';
+import {RootState} from '../../Redux/reducers';
 import SearchForm from '../shared/SearchForm/SearchForm';
 import styles from './Jobs.module.scss';
 import JobsGrid from '../shared/JobsGrid/JobsGrid';
 import jobsAPIs from '../../apis/jobs';
 
 const Jobs:FC = () => {
-  const [jobs, setJobs] = useState<IJob[]>([]);
   const [loading,setLoading] = useState<boolean>(false)
   const [searchText,setSearchText] = useState<string>('')
-  const [currentPage, setCurrentPage] = useState<number>(0);
+  const {jobs,jobsPage,jobsFirstLoad} = useSelector((state:RootState) => state.jobsData);
+  const [currentPage, setCurrentPage] = useState<number>(jobsPage);
+  const dispatch = useDispatch()
   const {push} = useHistory();
   const loader = useRef(null);
 
   useEffect(()=>{
+    dispatch(setJobsPage(currentPage))
+  },[currentPage,dispatch])
+
+
+  useEffect(()=>{
     (async()=>{
       try {
+        if(jobsFirstLoad) return;
         setLoading(true)
-        const jobs = await jobsAPIs.getJobs(currentPage);
-        const jobSkillsRequests : [Promise<IJob>]= jobs.slice(0,-1).map(
-          async({uuid}) => jobsAPIs.getJobRelatedSkills(uuid).catch(e => console.warn(e.message))
+        const jobs = await jobsAPIs.getJobs(jobsPage);
+        const jobSkillsRequests : [Promise<IJobData>]= jobs.slice(0,-1).map(
+          ({uuid}) => jobsAPIs.getJobRelatedSkills(uuid).catch(e => console.warn(e.message))
         )
         const jobsAndSkills = await Promise.all(jobSkillsRequests)
-        setJobs(prevJobs => [...prevJobs,...jobsAndSkills.filter(Boolean)])
+        const normalizedSkills = jobsAndSkills.reduce((acc,job)=> ([...acc,...job.skills]),[])
+        .reduce((acc,skill)=> ({...acc,[skill.skill_uuid]:skill}),{})
+
+        const normalizedJobs = jobsAndSkills.reduce(
+          (acc,job) => ({...acc,[job.job_uuid]:job})
+        ,{})
+        dispatch(setSkills(normalizedSkills))
+        dispatch(setJobs(normalizedJobs))
       } catch (error) {
         console.warn(error.message);
       } finally {
         setLoading(false);
       }
     })()
-  },[currentPage])
+  },[jobsPage,dispatch])
 
+  
   useEffect(() => {
     const options = {
        root: null,
@@ -42,7 +60,7 @@ const Jobs:FC = () => {
     const handleObserver = (entities) => {
       const target = entities[0];
       if (target.isIntersecting) {   
-        setCurrentPage((page) => page + 1)
+        setCurrentPage(prevPage => prevPage + 1)
       }
     }
 
@@ -50,7 +68,14 @@ const Jobs:FC = () => {
     if (loader.current) {
        observer.observe(loader.current)
     }
-  }, []);
+
+    dispatch(setJobsFirstLoad(false))
+    
+    return () => {
+      dispatch(setJobsFirstLoad(true))
+    }
+
+  }, [dispatch]);
 
   const navigateToSearchPage = useCallback(debounce((text)=>{
     push(`/search?jobTitle=${text}`);
@@ -67,7 +92,7 @@ const Jobs:FC = () => {
       <div className={styles['search-results']}>
         <h2>All jobs</h2>
         {loading && <p>Loading ...</p>}
-        <JobsGrid jobs={jobs}/>
+        <JobsGrid jobs={Object.values(jobs)}/>
       </div>
       {!searchText && <div className={styles.loading} ref={loader}>
         <h2>Loading ...</h2>
@@ -78,7 +103,7 @@ const Jobs:FC = () => {
 
 export default Jobs;
 
-interface IJob {
+interface IJobData {
   job_uuid: string,
   job_title: string,
   skills: {
